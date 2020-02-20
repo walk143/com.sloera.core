@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sloera.demo">
+	<resultMap type="com.sloera.demo.po.MonitorBean"  id="demomap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="run_time" property="run_time"  javaType="java.util.Date"/>
+	</resultMap>
+	<!-- 查询对象 -->
+	<select id="getTest" resultMap="demomap">
+		select * from monitor_server 
+	</select>
+	
+	<select id="getDemo" resultMap="demomap" >
+		select * from monitor_server where id = #{id}
+	</select>
+	
+	<select id="selectDemo" resultType="map" >
+		select * from monitor_server where id = #{id}
+	</select>
+	
+	<!-- 插入对象 -->
+	<insert id="insertTest" >
+	    insert into monitor_server (id, name, ip_address,status) values (
+	    	#{id}, #{name},#{ip_address},#{status}
+	    )
+	</insert>
+	<!-- 更新对象 -->
+	<update id="updateTest" >
+	    update monitor_server set name=#{name},ip_address=#{ip_address} where ID = #{id}
+	</update>
+	<!-- 删除对象 -->
+	<delete id="deleteTest" >
+	  	delete from monitor_server where id = #{id}
+	</delete>
+</mapper>
