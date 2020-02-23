@@ -4,10 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DbUtils {
     private static Logger logger = LogManager.getLogger(DbUtils.class);
@@ -116,5 +121,35 @@ public class DbUtils {
         stringBuilder.append(" select row_.*, rownum rownum_ from ( ");
         stringBuilder.append(select).append(" ").append(sqlExceptSelect);
         stringBuilder.append(" ) row_ where rownum_ between ").append(start).append(" and ").append(end);
+    }
+
+    public final static String getDriverName() {
+        String driverName = null;
+        String orclName = "oracle";
+        String mysqlName = "mysql";
+
+        Resource resource = new ClassPathResource("properties/jdbc.properties");
+        String propertyKey = "jdbc.driverClassName";
+        if (!resource.isReadable()) {
+            resource = new ClassPathResource("properties/datasource.properties");
+            propertyKey = "jdbc.master.driverClassName";
+        }
+        Properties properties = null;
+        try {
+            properties = PropertiesLoaderUtils.loadProperties(resource);
+            String driverFullName = properties.getProperty(propertyKey);
+            if (null != driverFullName) {
+                if (driverFullName.contains(orclName)) {
+                    driverName = "orcl";
+                } else if (driverFullName.contains(mysqlName)) {
+                    driverName = mysqlName;
+                } else {
+                    driverName = "orcl";
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return driverName;
     }
 }
