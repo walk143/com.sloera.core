@@ -10,7 +10,9 @@ import org.springframework.web.util.JavaScriptUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 public abstract class BaseController {
@@ -98,5 +100,33 @@ public abstract class BaseController {
         } catch (IOException e){
             logger.error(e.getMessage(),e);
         }
+    }
+
+    /*
+     * @Description 获取post请求的body参数
+     * @param request:  request请求
+     * @Return java.lang.String body字符串形式内容
+     * @Author SloeraN
+     * @Date 2020/3/1 20:13
+     */
+    public String getPostBody(HttpServletRequest request) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String line = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }
