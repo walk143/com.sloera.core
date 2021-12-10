@@ -23,7 +23,7 @@
     <mybatis.version>3.5.4</mybatis.version>
     <mybatis-spring.version>2.0.3</mybatis-spring.version>
     <fastjson.version>1.2.9</fastjson.version>
-    <log4j.version>2.9.1</log4j.version>
+    <log4j.version>2.15.0</log4j.version>
     <commons-lang.version>2.6</commons-lang.version> <!--字符处理等-->
     <rocketmq.version>4.6.0</rocketmq.version> <!--字符处理等-->
   </properties>
